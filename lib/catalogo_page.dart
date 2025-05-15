@@ -31,16 +31,26 @@ class CatalogoPage extends StatelessWidget {
               final data = peliculas[index];
               final title = data['title'] ?? 'Sin título';
               final imageUrl = data['imageUrl'] ?? '';
-
-              return ListTile(
-                leading:
-                    imageUrl.isNotEmpty
-                        ? Image.network(imageUrl, width: 60, fit: BoxFit.cover)
-                        : const Icon(Icons.movie),
-                title: Text(title),
-                onTap: () {
-                  Navigator.pushNamed(context, '/descripcion', arguments: data);
-                },
+              return Container(
+                margin: const EdgeInsets.only(bottom: 12.0),
+                child: ListTile(
+                  leading:
+                      imageUrl.isNotEmpty
+                          ? Image.network(
+                            imageUrl,
+                            width: 60,
+                            fit: BoxFit.cover,
+                          )
+                          : const Icon(Icons.movie),
+                  title: Text(title),
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/descripcion',
+                      arguments: data,
+                    );
+                  },
+                ),
               );
             },
           );

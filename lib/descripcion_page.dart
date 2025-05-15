@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'widgets/app_drawer.dart';
 
 class DescripcionPage extends StatelessWidget {
   const DescripcionPage({super.key});
@@ -19,10 +20,8 @@ class DescripcionPage extends StatelessWidget {
     final imageUrl = pelicula['imageUrl'] ?? '';
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        // El botón atrás viene automáticamente en AppBar
-      ),
+      appBar: AppBar(title: Text(title)),
+      drawer: buildAppDrawer(context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

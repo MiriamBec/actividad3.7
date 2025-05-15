@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'login_page.dart';
 import 'register_page.dart';
 import 'catalogo_page.dart';
 import 'descripcion_page.dart';
 import 'admin_page.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,10 +23,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Catálogo de Películas',
-      initialRoute: '/login',
       debugShowCheckedModeBanner: false,
+      home: const AuthGate(),
       routes: {
-        '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
         '/catalogo': (context) => CatalogoPage(),
         '/descripcion': (context) => DescripcionPage(),
@@ -49,6 +49,31 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+    );
+  }
+}
+
+/// Widget que muestra LoginPage o CatalogoPage según el estado de sesión.
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // 1) Mientras carga:
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        // 2) Si hay usuario logueado → Catálogo
+        if (snapshot.hasData) {
+          return const CatalogoPage();
+        }
+        // 3) Si NO hay usuario → Login
+        return LoginPage();
+      },
     );
   }
 }

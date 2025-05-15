@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'register_page.dart';
+// import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   void login(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
-      // Aquí navegas a la pantalla de catálogo
-      Navigator.pushReplacementNamed(context, '/catalogo');
+      // NO Navigator.push…: AuthGate detecta el cambio y muestra CatalogoPage.
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -24,34 +24,66 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Iniciar Sesión')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: 'Correo'),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: 'Contraseña'),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              onPressed: () => login(context),
-              child: Text('Ingresar'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
-                );
-              },
-              child: Text('¿No tienes cuenta? Regístrate'),
-            ),
-          ],
+      // Para centrar todo verticalmente:
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.movie, // Ícono de película
+                size: 80,
+                color: Colors.deepPurple,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Bienvenido',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Campos de correo y contraseña
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Correo',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Contraseña',
+                  border: OutlineInputBorder(),
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 24),
+
+              // Botón de login
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => login(context),
+                  child: const Text('Ingresar'),
+                ),
+              ),
+
+              // Enlace a registro
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                child: const Text('¿No tienes cuenta? Regístrate'),
+              ),
+            ],
+          ),
         ),
       ),
     );
