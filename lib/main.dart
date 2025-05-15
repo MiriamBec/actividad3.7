@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'login_page.dart';
+import 'register_page.dart';
+import 'catalogo_page.dart';
+import 'descripcion_page.dart';
+import 'admin_page.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -17,8 +22,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Catálogo de Películas',
+      initialRoute: '/login',
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
+        '/catalogo': (context) => CatalogoPage(),
+        '/descripcion': (context) => DescripcionPage(),
+        '/admin': (context) => AdminPage(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //

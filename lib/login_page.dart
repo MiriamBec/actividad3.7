@@ -13,9 +13,7 @@ class LoginPage extends StatelessWidget {
         password: passwordController.text,
       );
       // Aquí navegas a la pantalla de catálogo
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Inicio de sesión exitoso")));
+      Navigator.pushReplacementNamed(context, '/catalogo');
     } catch (e) {
       ScaffoldMessenger.of(
         context,
